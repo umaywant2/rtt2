@@ -1,1 +1,124 @@
+openapi: 3.1.0
+info:
+  title: RTT/2 — Drift Scan API
+  version: "2026.1"
+  description: >
+    Computes drift across structural, energetic, resonant, and cross-regime
+    dimensions using RTT/2 regime-map inputs.
+
+servers:
+  - url: https://rtt2.online/api
+
+paths:
+  /drift-scan:
+    post:
+      summary: Compute drift scan
+      operationId: driftScan
+      description: >
+        Computes drift vectors and drift fields across S/E/R regimes.
+        Requires regime-map input from RTT/2 /map endpoint.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DriftScanInput"
+
+      responses:
+        "200":
+          description: Drift scan computed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DriftScanOutput"
+
+        "400":
+          description: Invalid input payload
+        "500":
+          description: Internal engine error
+
+components:
+  schemas:
+
+    DriftScanInput:
+      type: object
+      description: Regime-map input required for drift computation.
+      properties:
+        regimeMap:
+          type: object
+          description: Regime mapping output from RTT/2 /map endpoint.
+      required:
+        - regimeMap
+
+    DriftScanOutput:
+      type: object
+      description: Full drift scan output.
+      properties:
+        engine:
+          type: string
+          example: "RTT/2"
+        operator:
+          type: string
+          example: "drift-scan"
+        version:
+          type: string
+          example: "2026.1"
+
+        vectors:
+          type: object
+          description: Drift vectors across S/E/R modes.
+          properties:
+            structural:
+              type: array
+              items:
+                $ref: "#/components/schemas/DriftVector"
+            energetic:
+              type: array
+              items:
+                $ref: "#/components/schemas/DriftVector"
+            resonant:
+              type: array
+              items:
+                $ref: "#/components/schemas/DriftVector"
+            cross:
+              type: array
+              items:
+                $ref: "#/components/schemas/DriftVector"
+
+        fields:
+          type: array
+          description: Drift fields representing directional surfaces.
+          items:
+            $ref: "#/components/schemas/DriftField"
+
+    DriftVector:
+      type: object
+      description: Drift vector between regimes.
+      properties:
+        from:
+          type: string
+          example: "S"
+        to:
+          type: string
+          example: "E"
+        magnitude:
+          type: number
+          example: 0.3
+
+    DriftField:
+      type: object
+      description: Drift field representing directional drift across regimes.
+      properties:
+        label:
+          type: string
+          example: "S→E drift field"
+        regimes:
+          type: array
+          items:
+            type: string
+          example: ["S", "E"]
+        direction:
+          type: string
+          example: "SE"
 
