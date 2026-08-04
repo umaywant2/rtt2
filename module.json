@@ -1,1 +1,89 @@
+{
+  "module": "RTT/2",
+  "engine": "Regime Mapping Engine",
+  "version": "2026.1",
+  "description": "RTT/2 performs regime mapping, coherence geometry computation, and drift detection across structural, energetic, and resonant dimensions.",
+  
+  "triadic": {
+    "mode": ["S", "E", "R"],
+    "purpose": "Regime-aware structural mapping",
+    "operators": [
+      "regime-map",
+      "coherence-geometry",
+      "drift-scan"
+    ]
+  },
+
+  "inputs": {
+    "accepted": [
+      "text",
+      "json",
+      "structured-object"
+    ],
+    "schema": "map.schema.json"
+  },
+
+  "outputs": {
+    "primary": [
+      "regime-map.json",
+      "coherence-geometry.json",
+      "drift-scan.json"
+    ],
+    "secondary": [
+      "topology.json",
+      "topology.svg"
+    ]
+  },
+
+  "api": {
+    "endpoints": [
+      {
+        "name": "map",
+        "client": "map.client.js",
+        "worker": "map.worker.js",
+        "schema": "map.schema.json",
+        "openapi": "map.openapi.yaml"
+      },
+      {
+        "name": "regime",
+        "client": "regime.client.js",
+        "worker": "regime.worker.js",
+        "schema": "regime.schema.json",
+        "openapi": "regime.openapi.yaml"
+      }
+    ]
+  },
+
+  "engine_files": [
+    "engine/rtt2_manifest.md",
+    "engine/regime-map.md",
+    "engine/coherence-geometry.md",
+    "engine/drift-scan.md",
+    "engine/topology.json",
+    "engine/topology.svg"
+  ],
+
+  "docs": [
+    "docs/regime-mapping-protocol.md",
+    "docs/coherence-geometry-protocol.md",
+    "docs/drift-detection-protocol.md",
+    "docs/integration-notes.md"
+  ],
+
+  "assets": {
+    "css": "assets/css/rtt2.css",
+    "js": "assets/js/rtt2.js",
+    "og": "assets/og/rtt2.png"
+  },
+
+  "integration": {
+    "pipeline_position": "RTT/1 → RTT/2 → RTT/3 → RTT/12",
+    "upstream": "RTT/1",
+    "downstream": ["RTT/3", "RTT/12"]
+  },
+
+  "license": "MIT",
+  "author": "Nawder Loswin",
+  "canonical": true
+}
 
