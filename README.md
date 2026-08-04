@@ -1,3 +1,5 @@
+<img width="693" height="693" alt="hephaestus_rtt2" src="https://github.com/user-attachments/assets/2bf3c7d1-9559-4c0e-b589-94bcc7947c0b" />
+
 # **RTT/2 Engine — Regime Mapping & Coherence Geometry**  
 
 - [`module.json`](https://raw.githubusercontent.com/umaywant2/rtt2/refs/heads/main/module.json) — Agentic module schema role assignments
