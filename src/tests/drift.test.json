@@ -1,1 +1,48 @@
+{
+  "engine": "RTT/2",
+  "operator": "drift-scan",
+  "version": "2026.1",
+
+  "description": "Test suite for RTT/2 drift-scan operator. Validates structural, energetic, resonant, and cross-regime drift vectors, plus drift fields.",
+
+  "input": {
+    "regimeMap": {
+      "S": { "weight": 0.3 },
+      "E": { "weight": 0.5 },
+      "R": { "weight": 0.2 },
+      "transitions": [
+        { "from": "S", "to": "E", "weight": 0.4 },
+        { "from": "E", "to": "R", "weight": 0.3 }
+      ],
+      "intersections": [
+        { "label": "S-E intersection", "regimes": ["S", "E"] }
+      ]
+    }
+  },
+
+  "expected": {
+    "vectors": {
+      "structural": [
+        { "from": "S", "to": "E" }
+      ],
+      "energetic": [
+        { "from": "E", "to": "R" }
+      ],
+      "resonant": [
+        { "from": "R", "to": "S" }
+      ],
+      "cross": [
+        { "from": "S", "to": "R" }
+      ]
+    },
+
+    "fields": [
+      {
+        "label": "S→E drift field",
+        "regimes": ["S", "E"],
+        "direction": "SE"
+      }
+    ]
+  }
+}
 
