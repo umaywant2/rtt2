@@ -1,4 +1,8 @@
 # **RTT/2 Engine — Regime Mapping & Coherence Geometry**  
+
+- [`module.json`](https://raw.githubusercontent.com/umaywant2/rtt2/refs/heads/main/module.json) — Agentic module schema role assignments
+- [`engine.json`](https://raw.githubusercontent.com/umaywant2/rtt2/refs/heads/main/engine.json) — Agentic module schema engine assignments
+
 ### *Triadic Frameworks — Resonance‑Time Theory (RTT)*  
 ### *Module: RTT/2 — Regime‑Aware Structural Mapping Engine*
 
