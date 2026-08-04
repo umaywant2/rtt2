@@ -1,1 +1,75 @@
+openapi: 3.1.0
+info:
+  title: RTT/2 Regime API
+  version: "2026.1"
+  description: >
+    Provides RTT/2 regime-level structural analysis for S/E/R
+    inputs prior to full regime-map computation.
+
+paths:
+  /regime:
+    post:
+      summary: Perform RTT/2 regime structural analysis
+      operationId: regime
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegimeInput"
+      responses:
+        "200":
+          description: Successful regime analysis
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegimeOutput"
+
+components:
+  schemas:
+
+    RegimeInput:
+      type: object
+      required: ["input"]
+      properties:
+        input:
+          type: object
+          description: Raw structural input for RTT/2 regime analysis.
+          properties:
+            nodes:
+              type: array
+              items:
+                type: string
+            edges:
+              type: array
+              items:
+                type: object
+                properties:
+                  from: { type: string }
+                  to: { type: string }
+                  weight: { type: number }
+
+    RegimeOutput:
+      type: object
+      properties:
+        engine:
+          type: string
+          example: "RTT/2"
+        operator:
+          type: string
+          example: "regime"
+        version:
+          type: string
+          example: "2026.1"
+        result:
+          type: object
+          properties:
+            summary:
+              type: object
+              properties:
+                nodeCount: { type: number }
+                edgeCount: { type: number }
+                regimesDetected:
+                  type: array
+                  items: { type: string }
 
