@@ -1,1 +1,67 @@
+{
+  "engine": "RTT/2",
+  "version": "2026.1",
+  "description": "RTT/2 engine topology describing operators, pipeline order, and file-level architecture.",
+
+  "operators": {
+    "regime-map": {
+      "order": 1,
+      "purpose": "Compute regime weights, transitions, and intersections.",
+      "files": {
+        "engine": "src/regime/regime-map.js",
+        "graph": "src/regime/regime-map.graph.js",
+        "worker": "src/regime/regime-map.worker.js",
+        "schema": "src/regime/regime-map.schema.json",
+        "openapi": "src/regime/regime-map.openapi.yaml",
+        "tests": "src/tests/regime.test.json",
+        "doc": "engine/regime-map.md"
+      },
+      "inputs": ["input"],
+      "outputs": ["weights", "transitions", "intersections"]
+    },
+
+    "drift-scan": {
+      "order": 2,
+      "purpose": "Compute structural, energetic, resonant, and cross-regime drift vectors and drift fields.",
+      "files": {
+        "engine": "src/drift/drift-scan.js",
+        "graph": "src/drift/drift-scan.graph.js",
+        "worker": "src/drift/drift-scan.worker.js",
+        "schema": "src/drift/drift-scan.schema.json",
+        "openapi": "src/drift/drift-scan.openapi.yaml",
+        "tests": "src/tests/drift.test.json",
+        "doc": "engine/drift-scan.md"
+      },
+      "inputs": ["regimeMap"],
+      "outputs": ["vectors", "fields"]
+    },
+
+    "coherence-geometry": {
+      "order": 3,
+      "purpose": "Compute alignment, stability, drift overlays, and coherence surfaces.",
+      "files": {
+        "engine": "src/coherence/coherence-geometry.js",
+        "graph": "src/coherence/coherence-geometry.graph.js",
+        "worker": "src/coherence/coherence-geometry.worker.js",
+        "schema": "src/coherence/coherence-geometry.schema.json",
+        "openapi": "src/coherence/coherence-geometry.openapi.yaml",
+        "tests": "src/tests/coherence.test.json",
+        "doc": "engine/coherence-geometry.md"
+      },
+      "inputs": ["regimeMap", "driftScan"],
+      "outputs": ["alignment", "stability", "drift", "surfaces"]
+    }
+  },
+
+  "pipeline": [
+    "regime-map",
+    "drift-scan",
+    "coherence-geometry"
+  ],
+
+  "compatibility": {
+    "upstream": ["RTT/1"],
+    "downstream": ["RTT/3", "RTT/12"]
+  }
+}
 
