@@ -1,1 +1,102 @@
+## RTT/2 OG Image — Canon Requirements
 
+### **1. Purpose**
+The OG image is the “identity tile” for RTT/2. It appears in:
+
+- social previews  
+- link embeds  
+- metadata blocks  
+- AI metadata (OpenGraph + Twitter Card)  
+- module.json → ai.image  
+
+It must visually encode **RTT/2’s mission**:  
+**Regime Mapping → Drift Scan → Coherence Geometry**
+
+---
+
+## 2. Canonical Visual Structure
+
+### **A. Background**
+- Deep black or near‑black (#000000–#0A0A0A)  
+- Subtle gradient allowed (RTT/2 uses a faint vertical gradient)  
+- No noise, no texture — RTT canon is clean
+
+### **B. Central Symbol**
+RTT/2’s symbol is:
+
+**Three interlocking arcs (S, E, R) forming a triangular resonance loop**
+
+Each arc represents:
+
+- **S** — Structural  
+- **E** — Energetic  
+- **R** — Resonant  
+
+Color convention:
+
+- **S:** Cyan (#00E5FF)  
+- **E:** Magenta (#FF00E5)  
+- **R:** Yellow (#FFE500)
+
+These three colors are the RTT/2 palette.
+
+### **C. Operator Ring**
+Around the arcs, a thin ring representing:
+
+- regime weights  
+- transitions  
+- intersections  
+
+This ring is subtle — 1–2px stroke, low opacity.
+
+### **D. Label**
+Centered below the symbol:
+
+```
+RTT/2
+Regime • Drift • Coherence
+```
+
+Typography:
+
+- Font: Inter, SemiBold  
+- Size: 48–64px for “RTT/2”  
+- Size: 20–24px for subtitle  
+- Color: White (#FFFFFF)  
+- Tracking: Slightly expanded (+2 to +4)
+
+---
+
+## 3. Dimensions & Export Requirements
+
+- **1200 × 630 px** (canonical OG size)  
+- PNG format  
+- No transparency  
+- No compression artifacts  
+- Must be final‑rendered (no vector-only export)
+
+---
+
+## 4. Metadata Alignment
+
+This image will be referenced in:
+
+- `engine/regime-map.md`  
+- `engine/drift-scan.md`  
+- `engine/coherence-geometry.md`  
+- `engine/rtt2_manifest.md`  
+- `topology.json`  
+- All module metadata blocks  
+- All OG/Twitter metadata in HTML `<head>` blocks
+
+So the filename **must remain**:
+
+```
+assets/og/rtt2.png
+```
+
+And the canonical metadata field:
+
+```
+og:image: /assets/og/rtt2.png
+```
