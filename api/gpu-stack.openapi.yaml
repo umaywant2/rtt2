@@ -1,1 +1,149 @@
+# api/gpu-stack.openapi.yaml
+openapi: 3.1.0
+info:
+  title: RTT/2 GPU Stack API
+  version: "2026.1"
+  description: >
+    Unified RTT/2 GPU stack operator. Ingests substrate, rendering,
+    and execution views and produces regime, drift, and coherence views.
+
+paths:
+  /gpu-stack:
+    post:
+      summary: Build RTT/2 GPU stack views
+      operationId: gpuStack
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GpuStackInput"
+      responses:
+        "200":
+          description: Successful GPU stack computation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GpuStackOutput"
+
+components:
+  schemas:
+
+    GpuStackInput:
+      type: object
+      required: ["openGpuStack"]
+      properties:
+        openGpuStack:
+          type: object
+          required: ["substrate", "rendering", "execution"]
+          properties:
+            substrate:
+              type: object
+              properties:
+                nodes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id: { type: string }
+                      label: { type: string }
+                      tier: { type: string, enum: ["S", "E", "R"] }
+                    required: ["id", "label", "tier"]
+                edges:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      from: { type: string }
+                      to: { type: string }
+                      weight:
+                        type: number
+                        minimum: 0
+                        maximum: 1
+                    required: ["from", "to", "weight"]
+              required: ["nodes", "edges"]
+
+            rendering:
+              type: object
+              properties:
+                primitives:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id: { type: string }
+                      stage: { type: string }
+                      source: { type: string }
+                      target: { type: string }
+                      instability:
+                        type: number
+                        minimum: 0
+                        maximum: 1
+                    required: ["id", "stage", "source", "target", "instability"]
+                paths:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      label: { type: string }
+                      regimes:
+                        type: array
+                        items: { type: string, enum: ["S", "E", "R"] }
+                      direction: { type: string }
+                    required: ["label", "regimes", "direction"]
+              required: ["primitives", "paths"]
+
+            execution:
+              type: object
+              properties:
+                units:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id: { type: string }
+                      label: { type: string }
+                      regimes:
+                        type: array
+                        items: { type: string, enum: ["S", "E", "R"] }
+                      stability:
+                        type: number
+                        minimum: 0
+                        maximum: 1
+                      alignment:
+                        type: number
+                        minimum: 0
+                        maximum: 1
+                    required: ["id", "label", "regimes", "stability", "alignment"]
+                overlays:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      label: { type: string }
+                      magnitude:
+                        type: number
+                        minimum: 0
+                        maximum: 1
+                    required: ["label", "magnitude"]
+              required: ["units", "overlays"]
+
+    GpuStackOutput:
+      type: object
+      properties:
+        engine:
+          type: string
+          example: "RTT/2"
+        operator:
+          type: string
+          example: "gpu-stack"
+        version:
+          type: string
+          example: "2026.1"
+        regimeView:
+          type: object
+        driftView:
+          type: object
+        coherenceView:
+          type: object
 
