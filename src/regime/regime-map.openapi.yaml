@@ -1,1 +1,125 @@
+openapi: 3.1.0
+info:
+  title: RTT/2 — Regime Map API
+  version: "2026.1"
+  description: >
+    Computes regime mapping across structural, energetic, and resonant modes.
+    Produces regime weights, regime transitions, and regime intersections.
+
+servers:
+  - url: https://rtt2.online/api
+
+paths:
+  /regime-map:
+    post:
+      summary: Compute regime map
+      operationId: regimeMap
+      description: >
+        Computes regime weights, transitions, and intersections across S/E/R
+        regimes. Accepts upstream structural input from RTT/1.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegimeMapInput"
+
+      responses:
+        "200":
+          description: Regime map computed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegimeMapOutput"
+
+        "400":
+          description: Invalid input payload
+        "500":
+          description: Internal engine error
+
+components:
+  schemas:
+
+    RegimeMapInput:
+      type: object
+      description: Input object containing upstream structural or contextual data.
+      properties:
+        input:
+          type: object
+          description: Raw input used to compute regime weights, transitions, and intersections.
+      required:
+        - input
+
+    RegimeMapOutput:
+      type: object
+      description: Full regime map output.
+      properties:
+        engine:
+          type: string
+          example: "RTT/2"
+        operator:
+          type: string
+          example: "regime-map"
+        version:
+          type: string
+          example: "2026.1"
+
+        weights:
+          type: object
+          description: Regime weights for S/E/R modes.
+          properties:
+            S:
+              $ref: "#/components/schemas/RegimeWeight"
+            E:
+              $ref: "#/components/schemas/RegimeWeight"
+            R:
+              $ref: "#/components/schemas/RegimeWeight"
+
+        transitions:
+          type: array
+          description: Regime transitions (edges).
+          items:
+            $ref: "#/components/schemas/RegimeTransition"
+
+        intersections:
+          type: array
+          description: Regime intersections (surfaces).
+          items:
+            $ref: "#/components/schemas/RegimeIntersection"
+
+    RegimeWeight:
+      type: object
+      description: Weight assigned to a regime.
+      properties:
+        weight:
+          type: number
+          example: 0.42
+
+    RegimeTransition:
+      type: object
+      description: Transition between regimes.
+      properties:
+        from:
+          type: string
+          example: "S"
+        to:
+          type: string
+          example: "E"
+        weight:
+          type: number
+          example: 0.4
+
+    RegimeIntersection:
+      type: object
+      description: Intersection surface between regimes.
+      properties:
+        label:
+          type: string
+          example: "S-E intersection"
+        regimes:
+          type: array
+          items:
+            type: string
+          example: ["S", "E"]
 
