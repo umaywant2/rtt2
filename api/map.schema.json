@@ -1,1 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTT/2 Regime Map Schema",
+  "version": "2026.1",
+  "type": "object",
+
+  "properties": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "structure": {
+          "type": "object",
+          "properties": {
+            "nodes": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": { "type": "string" },
+                  "to": { "type": "string" },
+                  "weight": { "type": "number" }
+                },
+                "required": ["from", "to", "weight"]
+              }
+            }
+          }
+        }
+      },
+      "required": ["structure"]
+    },
+
+    "result": {
+      "type": "object",
+      "properties": {
+        "weights": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "weight": { "type": "number" }
+            },
+            "required": ["weight"]
+          }
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": { "type": "string" },
+              "to": { "type": "string" },
+              "weight": { "type": "number" }
+            },
+            "required": ["from", "to", "weight"]
+          }
+        },
+        "intersections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": { "type": "string" },
+              "regimes": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "required": ["label", "regimes"]
+          }
+        }
+      }
+    }
+  },
+
+  "required": ["input"]
+}
 
