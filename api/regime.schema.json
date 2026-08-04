@@ -1,1 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTT/2 Regime Schema",
+  "version": "2026.1",
+  "type": "object",
+
+  "properties": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": { "type": "string" },
+              "to": { "type": "string" },
+              "weight": { "type": "number" }
+            },
+            "required": ["from", "to", "weight"]
+          }
+        }
+      },
+      "required": ["nodes", "edges"]
+    },
+
+    "result": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": "object",
+          "properties": {
+            "nodeCount": { "type": "number" },
+            "edgeCount": { "type": "number" },
+            "regimesDetected": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "required": ["nodeCount", "edgeCount", "regimesDetected"]
+        }
+      }
+    }
+  },
+
+  "required": ["input"]
+}
 
