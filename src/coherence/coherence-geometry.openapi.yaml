@@ -1,1 +1,122 @@
+openapi: 3.1.0
+info:
+  title: RTT/2 — Coherence Geometry API
+  version: "2026.1"
+  description: >
+    Computes coherence geometry across S/E/R regimes, including alignment vectors,
+    stability gradients, drift vectors, and coherence surfaces.
+
+servers:
+  - url: https://rtt2.online/api
+
+paths:
+  /coherence-geometry:
+    post:
+      summary: Compute coherence geometry
+      operationId: coherenceGeometry
+      description: >
+        Computes coherence geometry using regime-map and drift-scan inputs.
+        Returns alignment vectors, stability gradients, drift vectors, and
+        coherence surfaces.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoherenceGeometryInput"
+
+      responses:
+        "200":
+          description: Coherence geometry computed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoherenceGeometryOutput"
+
+        "400":
+          description: Invalid input payload
+        "500":
+          description: Internal engine error
+
+components:
+  schemas:
+
+    CoherenceGeometryInput:
+      type: object
+      description: Input object containing regime-map and drift-scan data.
+      properties:
+        regimeMap:
+          type: object
+          description: Regime mapping output from RTT/2 /map endpoint.
+        driftScan:
+          type: object
+          description: Drift detection output from RTT/2 /regime endpoint.
+      required:
+        - regimeMap
+
+    CoherenceGeometryOutput:
+      type: object
+      description: Full coherence geometry output.
+      properties:
+        engine:
+          type: string
+          example: "RTT/2"
+        operator:
+          type: string
+          example: "coherence-geometry"
+        version:
+          type: string
+          example: "2026.1"
+
+        alignment:
+          type: array
+          description: Alignment vectors across regimes.
+          items:
+            $ref: "#/components/schemas/CoherenceVector"
+
+        stability:
+          type: array
+          description: Stability gradients across regimes.
+          items:
+            $ref: "#/components/schemas/CoherenceVector"
+
+        drift:
+          type: array
+          description: Drift vectors across S/E/R modes.
+          items:
+            $ref: "#/components/schemas/CoherenceVector"
+
+        surfaces:
+          type: array
+          description: Coherence surfaces representing regime intersections.
+          items:
+            $ref: "#/components/schemas/CoherenceSurface"
+
+    CoherenceVector:
+      type: object
+      description: Vector representing alignment, stability, or drift.
+      properties:
+        from:
+          type: string
+          example: "S"
+        to:
+          type: string
+          example: "E"
+        magnitude:
+          type: number
+          example: 0.8
+
+    CoherenceSurface:
+      type: object
+      description: Surface representing intersection of regimes.
+      properties:
+        label:
+          type: string
+          example: "S-E intersection"
+        regimes:
+          type: array
+          items:
+            type: string
+          example: ["S", "E"]
 
