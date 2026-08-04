@@ -16,4 +16,3 @@ export async function regimeMap(input) {
 
   return response.json();
 }
-
