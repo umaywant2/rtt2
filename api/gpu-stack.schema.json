@@ -1,1 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTT/2 GPU Stack Schema",
+  "version": "2026.1",
+  "type": "object",
+
+  "properties": {
+    "openGpuStack": {
+      "type": "object",
+      "required": ["substrate", "rendering", "execution"],
+
+      "properties": {
+
+        "substrate": {
+          "type": "object",
+          "description": "GPU substrate primitives and structural relationships.",
+          "properties": {
+            "nodes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "label": { "type": "string" },
+                  "tier": { "type": "string", "enum": ["S", "E", "R"] }
+                },
+                "required": ["id", "label", "tier"]
+              }
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": { "type": "string" },
+                  "to": { "type": "string" },
+                  "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+                },
+                "required": ["from", "to", "weight"]
+              }
+            }
+          },
+          "required": ["nodes", "edges"]
+        },
+
+        "rendering": {
+          "type": "object",
+          "description": "Rendering primitives, primitive-stream paths, and reconstruction events.",
+          "properties": {
+            "primitives": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "stage": { "type": "string" },
+                  "source": { "type": "string" },
+                  "target": { "type": "string" },
+                  "instability": { "type": "number", "minimum": 0, "maximum": 1 }
+                },
+                "required": ["id", "stage", "source", "target", "instability"]
+              }
+            },
+            "paths": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": { "type": "string" },
+                  "regimes": {
+                    "type": "array",
+                    "items": { "type": "string", "enum": ["S", "E", "R"] }
+                  },
+                  "direction": { "type": "string" }
+                },
+                "required": ["label", "regimes", "direction"]
+              }
+            }
+          },
+          "required": ["primitives", "paths"]
+        },
+
+        "execution": {
+          "type": "object",
+          "description": "GPU execution primitives, scheduling, and health metrics.",
+          "properties": {
+            "units": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "label": { "type": "string" },
+                  "regimes": {
+                    "type": "array",
+                    "items": { "type": "string", "enum": ["S", "E", "R"] }
+                  },
+                  "stability": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "alignment": { "type": "number", "minimum": 0, "maximum": 1 }
+                },
+                "required": ["id", "label", "regimes", "stability", "alignment"]
+              }
+            },
+            "overlays": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": { "type": "string" },
+                  "magnitude": { "type": "number", "minimum": 0, "maximum": 1 }
+                },
+                "required": ["label", "magnitude"]
+              }
+            }
+          },
+          "required": ["units", "overlays"]
+        }
+      }
+    },
+
+    "result": {
+      "type": "object",
+      "description": "Unified RTT/2 GPU operator output.",
+      "properties": {
+
+        "regimeView": {
+          "type": "object",
+          "properties": {
+            "weights": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "transitions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": { "type": "string" },
+                  "to": { "type": "string" },
+                  "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+                },
+                "required": ["from", "to", "weight"]
+              }
+            },
+            "intersections": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": { "type": "string" },
+                  "regimes": {
+                    "type": "array",
+                    "items": { "type": "string", "enum": ["S", "E", "R"] }
+                  }
+                },
+                "required": ["label", "regimes"]
+              }
+            }
+          }
+        },
+
+        "driftView": {
+          "type": "object",
+          "properties": {
+            "vectors": {
+              "type": "object",
+              "properties": {
+                "structural": { "type": "array" },
+                "energetic": { "type": "array" },
+                "resonant": { "type": "array" },
+                "cross": { "type": "array" }
+              }
+            },
+            "fields": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": { "type": "string" },
+                  "regimes": {
+                    "type": "array",
+                    "items": { "type": "string", "enum": ["S", "E", "R"] }
+                  },
+                  "direction": { "type": "string" }
+                },
+                "required": ["label", "regimes", "direction"]
+              }
+            }
+          }
+        },
+
+        "coherenceView": {
+          "type": "object",
+          "properties": {
+            "alignment": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": { "type": "string" },
+                  "to": { "type": "string" },
+                  "magnitude": { "type": "number", "minimum": 0, "maximum": 1 }
+                },
+                "required": ["from", "to", "magnitude"]
+              }
+            },
+            "stability": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": { "type": "string" },
+                  "gradient": { "type": "number", "minimum": 0, "maximum": 1 }
+                },
+                "required": ["label", "gradient"]
+              }
+            },
+            "surfaces": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": { "type": "string" },
+                  "regimes": {
+                    "type": "array",
+                    "items": { "type": "string", "enum": ["S", "E", "R"] }
+                  }
+                },
+                "required": ["label", "regimes"]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "required": ["openGpuStack"]
+}
 
