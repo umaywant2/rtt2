@@ -1,1 +1,88 @@
+{
+  "engine": "RTT/2",
+  "name": "Regime Mapping Engine",
+  "version": "2026.1",
+  "description": "RTT/2 maps structural, energetic, and resonant regimes; computes coherence geometry; and detects drift across triadic dimensions.",
+
+  "triadic": {
+    "mode": ["S", "E", "R"],
+    "primary_operator": "regime-map",
+    "operators": [
+      "regime-map",
+      "coherence-geometry",
+      "drift-scan"
+    ],
+    "purpose": "Regime-aware structural mapping and coherence analysis"
+  },
+
+  "pipeline": {
+    "position": "RTT/1 → RTT/2 → RTT/3 → RTT/12",
+    "upstream": "RTT/1",
+    "downstream": ["RTT/3", "RTT/12"]
+  },
+
+  "inputs": {
+    "types": ["text", "json", "structured-object"],
+    "schema": "src/api/map.schema.json"
+  },
+
+  "outputs": {
+    "primary": [
+      "regime-map.json",
+      "coherence-geometry.json",
+      "drift-scan.json"
+    ],
+    "secondary": [
+      "topology.json",
+      "topology.svg"
+    ]
+  },
+
+  "api": {
+    "map": {
+      "client": "src/api/map.client.js",
+      "worker": "src/api/map.worker.js",
+      "schema": "src/api/map.schema.json",
+      "openapi": "src/api/map.openapi.yaml",
+      "tests": "src/api/map.test.js"
+    },
+    "regime": {
+      "client": "src/api/regime.client.js",
+      "worker": "src/api/regime.worker.js",
+      "schema": "src/api/regime.schema.json",
+      "openapi": "src/api/regime.openapi.yaml",
+      "tests": "src/api/regime.test.js"
+    }
+  },
+
+  "engine_files": {
+    "manifest": "engine/rtt2_manifest.md",
+    "modules": [
+      "engine/regime-map.md",
+      "engine/coherence-geometry.md",
+      "engine/drift-scan.md"
+    ],
+    "topology": [
+      "engine/topology.json",
+      "engine/topology.svg"
+    ]
+  },
+
+  "docs": [
+    "docs/regime-mapping-protocol.md",
+    "docs/coherence-geometry-protocol.md",
+    "docs/drift-detection-protocol.md",
+    "docs/integration-notes.md"
+  ],
+
+  "assets": {
+    "css": "assets/css/rtt2.css",
+    "js": "assets/js/rtt2.js",
+    "og": "assets/og/rtt2.png"
+  },
+
+  "license": "MIT",
+  "author": "Nawder Loswin",
+  "canonical": true
+}
 
